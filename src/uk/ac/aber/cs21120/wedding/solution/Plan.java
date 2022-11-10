@@ -6,17 +6,21 @@ import java.util.*;
 
 public class Plan implements IPlan {
 
-    public List tables = new ArrayList<>(); //TODO decide weather to use a LinkedList or ArrayList
-    public Set<Integer> table = new HashSet<Integer>(); //Hash set of strings to represent guests
+    public ArrayList<Set> tables = new ArrayList<>();; //TODO decide weather to use a LinkedList or ArrayList
+    public Set<String> tableSet = new HashSet<>(); //Hash set of strings to represent guests
 
     /**
-     * Empty constructor that takes in number of tables and number of seats as parameters.
+     * Constructor creates list of tables that is the size of the numberOfTables and also
+     * checks that the seats per table is not larger than the set size.
      * @param numberOfTables
      * @param seatsPerTable
      */
     public Plan(int numberOfTables, int seatsPerTable) {
-        tables.add(numberOfTables);
-        table.add(seatsPerTable);
+        while (tables.size() < numberOfTables)
+        tables.add(tableSet);
+
+        while (seatsPerTable < tableSet.size())
+            tableSet.add("Seat");
     }
 
 
@@ -27,7 +31,7 @@ public class Plan implements IPlan {
      */
     @Override
     public int getSeatsPerTable() {
-        return 0;
+        return tableSet.size();
     }
 
     /**
@@ -37,19 +41,19 @@ public class Plan implements IPlan {
      */
     @Override
     public int getNumberOfTables() {
-        return 0;
+        return tables.size();
     }
 
     /**
      * Add a guest to a table. If the guest is already seated at any table it will
      * do nothing. If the table is already full (i.e. the number of guests at that table is
-     * equal to getSeatsPerTable() it will do nothing. If the table number is less than zero,
+     * equal to getSeatsPerTable() it will do nothing.) If the table number is less than zero,
      * or greater than getSeatsPerTable(), it will raise IndexOutOfBoundsException.
      * @param table the table number
      * @param guest the name of the guest
      */
     @Override
-    public void addGuestToTable(int table, String guest) {
+    public void addGuestToTable(int table, String guest) throws IndexOutOfBoundsException {
 
     }
 
