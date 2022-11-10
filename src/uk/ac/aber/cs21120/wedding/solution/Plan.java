@@ -16,11 +16,16 @@ public class Plan implements IPlan {
      * @param seatsPerTable
      */
     public Plan(int numberOfTables, int seatsPerTable) {
-        while (tables.size() < numberOfTables)
-        tables.add(tableSet);
+        int seatNumber = 1;
 
-        while (seatsPerTable < tableSet.size())
-            tableSet.add("Seat");
+        while (seatsPerTable > tableSet.size()) {
+            tableSet.add("Seat" + seatNumber);
+            seatNumber++;
+    }
+
+        while (tables.size() < numberOfTables) {
+            tables.add(tableSet);
+        }
     }
 
 
@@ -54,7 +59,7 @@ public class Plan implements IPlan {
      */
     @Override
     public void addGuestToTable(int table, String guest) throws IndexOutOfBoundsException {
-
+        tables.get(table);
     }
 
     /**
