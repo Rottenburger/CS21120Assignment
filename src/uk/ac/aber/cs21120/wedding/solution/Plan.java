@@ -10,13 +10,13 @@ public class Plan implements IPlan {
     public Set<String> tableSet = new HashSet<>(); //Hash set of strings to represent guests
 
     /**
-     * Constructor creates list of tables that is the size of the numberOfTables and also
-     * checks that the seats per table is not larger than the set size.
-     * @param numberOfTables
-     * @param seatsPerTable
+     * Constructor initialises table size by adding numbered seats to the table set. Then
+     * adds that table set to the list of tables as defined by the number of tables parameter
+     * @param numberOfTables defines the number of tableSets in the plan
+     * @param seatsPerTable defines the number of seats per tableSet
      */
     public Plan(int numberOfTables, int seatsPerTable) {
-        int seatNumber = 1;
+        int seatNumber = 0;
 
         while (seatsPerTable > tableSet.size()) {
             tableSet.add("Seat" + seatNumber);
@@ -59,7 +59,16 @@ public class Plan implements IPlan {
      */
     @Override
     public void addGuestToTable(int table, String guest) throws IndexOutOfBoundsException {
-        tables.get(table);
+
+        if (table < 0) {
+            throw new IndexOutOfBoundsException("that table number is invalid");
+        }
+        else {
+            tables.get(table).remove(tableSet.iterator().next());
+            tables.get(table).add(guest);
+            System.out.println(tables.get(table)); //Print tableSet to check if working
+        }
+
     }
 
     /**
@@ -70,6 +79,19 @@ public class Plan implements IPlan {
     @Override
     public void removeGuestFromTable(String guest) {
 
+        /*tables.get().remove(tableSet.iterator().next());*/
+
+        for (Set listOfTables: tables) {
+            if (listOfTables.contains(guest)) {
+                listOfTables.remove(guest);
+                listOfTables.add("Seat"); //TODO check number of seats avalible to create correctly named space
+                break;
+            }
+            else {
+                //Do nothing
+            }
+        }
+        System.out.println(tables); //Check tableSet
     }
 
     /**
@@ -79,7 +101,16 @@ public class Plan implements IPlan {
      */
     @Override
     public boolean isGuestPlaced(String guest) {
-        return false;
+        boolean guestFound = false;
+
+        for (Set listOfTables: tables) {
+            if (listOfTables.contains(guest)) {
+                guestFound = true;
+                System.out.println(listOfTables);
+                break;
+            }
+        }
+        return guestFound;
     }
 
     /**
