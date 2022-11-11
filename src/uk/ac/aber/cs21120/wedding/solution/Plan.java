@@ -6,7 +6,7 @@ import java.util.*;
 
 public class Plan implements IPlan {
 
-    public ArrayList<Set> tables = new ArrayList<>();; //TODO decide weather to use a LinkedList or ArrayList
+    public ArrayList<Set> tables = new ArrayList<>(); //TODO decide weather to use a LinkedList or ArrayList
     public Set<String> tableSet = new HashSet<>(); //Hash set of strings to represent guests
 
     /**
@@ -60,15 +60,19 @@ public class Plan implements IPlan {
     @Override
     public void addGuestToTable(int table, String guest) throws IndexOutOfBoundsException {
 
-        if (table < 0) {
+        /*check if table is valid (too high or too low)
+        * check if already seated (use guestplaced method)
+        * check seats per table & if there is a spare seat (getSeats per table method)
+        * */
+
+        if (table <= -1) {
             throw new IndexOutOfBoundsException("that table number is invalid");
         }
         else {
-            tables.get(table).remove(tableSet.iterator().next());
+            tables.get(table).remove(tableSet.iterator().next()); //TODO this removes every guest added & does this for every set in the list
             tables.get(table).add(guest);
             System.out.println(tables.get(table)); //Print tableSet to check if working
         }
-
     }
 
     /**
@@ -101,15 +105,32 @@ public class Plan implements IPlan {
      */
     @Override
     public boolean isGuestPlaced(String guest) {
-        boolean guestFound = false;
 
+        boolean guestFound = false; // .next().contains(guest)
+        int tableCheckingNum = 0;
+
+        while (tableCheckingNum < tables.size() && guestFound == false) {
+            if (tables.get(tableCheckingNum).contains(guest)) {
+                guestFound = true;
+                break;
+            }
+            System.out.println(tables.get(tableCheckingNum)); //Check what is found
+            System.out.println(guest); //Check what is found
+            tableCheckingNum++;
+        }
+
+        /*while (tables.listIterator().hasNext() && !tableSet.contains(guest)) {
+
+        }
+        tables.listIterator().next().contains(guest);
         for (Set listOfTables: tables) {
             if (listOfTables.contains(guest)) {
                 guestFound = true;
                 System.out.println(listOfTables);
                 break;
             }
-        }
+        }*/
+
         return guestFound;
     }
 
@@ -121,6 +142,14 @@ public class Plan implements IPlan {
      */
     @Override
     public Set<String> getGuestsAtTable(int t) {
-        return null;
+
+        if (t > tables.size()) {
+            throw new IndexOutOfBoundsException("There is no table with that number!");
+        }
+
+        /*tables.get(t).contains("Seat");
+        tables.get(t);*/
+
+        return tables.get(t);
     }
 }
