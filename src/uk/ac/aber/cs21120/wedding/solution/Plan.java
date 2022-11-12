@@ -68,34 +68,38 @@ public class Plan implements IPlan {
      */
     @Override
     public void addGuestToTable(int table, String guest) throws IndexOutOfBoundsException {
-        if (table <= -1 || table > tables.size()) {
-            throw new IndexOutOfBoundsException("that table number is invalid");
-        }
-        else if (isGuestPlaced(guest)) {
-            System.err.println("That guest has already been placed");
-        }
-        else if (getGuestsAtTable(table).size() == getSeatsPerTable()) {
-            System.err.println("This table is full");
-        }
-        else {
-            Iterator<String> iterator = tables.get(table).iterator();
-            while(iterator.hasNext())
-            {
-                String value = iterator.next();
-                if (value.contains("Seat"))
-                {
-                    iterator.remove();
-                    break;
-                }
+        try {
+            if (table <= -1 || tables.size() <= table) {
+                throw new IndexOutOfBoundsException("That table does not exist");
             }
-            System.out.println(tables.get(3)); //Print tableSet to check if working
-            tables.get(table).add(guest);
+            else if (isGuestPlaced(guest)) {
+                System.err.println("That guest has already been placed");
+            }
+            else if (getGuestsAtTable(table).size() == getSeatsPerTable()) {
+                System.err.println("This table is full");
+            }
+            else {
+                Iterator<String> iterator = tables.get(table).iterator();
+                while(iterator.hasNext())
+                {
+                    String value = iterator.next();
+                    if (value.contains("Seat"))
+                    {
+                        iterator.remove();
+                        break;
+                    }
+                }
+                System.out.println(tables.get(3)); //Print tableSet to check if working
+                tables.get(table).add(guest);
 
             /*tables.set(table, tableSet).remove("Seat 0");
             tables.get(table).remove("Seat 0");
 
             tables.get(table);
             tables.get(table).add(guest);*/
+            }
+        } catch (IndexOutOfBoundsException e) {
+            throw new IndexOutOfBoundsException("That table does not exist");
         }
 
         /*else {
