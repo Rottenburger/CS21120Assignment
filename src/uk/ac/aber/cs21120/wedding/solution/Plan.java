@@ -6,8 +6,9 @@ import java.util.*;
 
 public class Plan implements IPlan {
 
-    public ArrayList<Set> tables = new ArrayList<>(); //TODO decide weather to use a LinkedList or ArrayList
-    public Set<String> tableSet = new HashSet<>(); //Hash set of strings to represent guests
+    public List<Set> tables = new ArrayList<>(); //TODO decide weather to use a LinkedList or ArrayList
+    public int tableSeats;
+    /*public Set<String> tableSet = new HashSet<>(); //Hash set of strings to represent guests*/
 
     /**
      * Constructor initialises table size by adding numbered seats to the table set. Then
@@ -16,15 +17,24 @@ public class Plan implements IPlan {
      * @param seatsPerTable defines the number of seats per tableSet
      */
     public Plan(int numberOfTables, int seatsPerTable) {
-        int seatNumber = 0;
-
-        while (seatsPerTable > tableSet.size()) {
-            tableSet.add("Seat" + seatNumber);
-            seatNumber++;
-    }
+        int tableNumber = 0;
+        int tableSeat = 0;
+        tableSeats = seatsPerTable; //Assigning the seats per table to a global variable because I don't know any other way
 
         while (tables.size() < numberOfTables) {
-            tables.add(tableSet);
+            tables.add(new HashSet<String>()); //THIS IS THE PROBLEM!!
+        }
+
+
+        while (numberOfTables > tableNumber) {
+            if (tableSeat != seatsPerTable) {
+                tables.get(tableNumber).add("Seat " + tableSeat);
+                tableSeat++;
+            }
+            else {
+                tableNumber++;
+                tableSeat = 0;
+            }
         }
     }
 
@@ -36,7 +46,7 @@ public class Plan implements IPlan {
      */
     @Override
     public int getSeatsPerTable() {
-        return tableSet.size();
+        return tableSeats;
     }
 
     /**
@@ -60,19 +70,40 @@ public class Plan implements IPlan {
     @Override
     public void addGuestToTable(int table, String guest) throws IndexOutOfBoundsException {
 
-        /*check if table is valid (too high or too low)
-        * check if already seated (use guestplaced method)
-        * check seats per table & if there is a spare seat (getSeats per table method)
-        * */
 
-        if (table <= -1) {
+        if (table <= -1 || table > tables.size()) {
             throw new IndexOutOfBoundsException("that table number is invalid");
         }
+        if (isGuestPlaced(guest) && getGuestsAtTable(table).size() == getSeatsPerTable()) {
+            System.err.println("The table is either full or the guest has already been placed");
+        }
         else {
+            Iterator<String> iterator = tables.get(table).iterator();
+            while(iterator.hasNext())
+            {
+                String value = iterator.next();
+                if (value.contains("Seat"))
+                {
+                    iterator.remove();
+                    break;
+                }
+            }
+
+            System.out.println(tables.get(0)); //Print tableSet to check if working
+            tables.get(table).add(guest);
+
+            /*tables.set(table, tableSet).remove("Seat 0");
+            tables.get(table).remove("Seat 0");
+
+            tables.get(table);
+            tables.get(table).add(guest);*/
+        }
+
+        /*else {
             tables.get(table).remove(tableSet.iterator().next()); //TODO this removes every guest added & does this for every set in the list
             tables.get(table).add(guest);
             System.out.println(tables.get(table)); //Print tableSet to check if working
-        }
+        }*/
     }
 
     /**
@@ -85,7 +116,7 @@ public class Plan implements IPlan {
 
         /*tables.get().remove(tableSet.iterator().next());*/
 
-        for (Set listOfTables: tables) {
+        /*for (Set listOfTables: tables) {
             if (listOfTables.contains(guest)) {
                 listOfTables.remove(guest);
                 listOfTables.add("Seat"); //TODO check number of seats avalible to create correctly named space
@@ -95,7 +126,7 @@ public class Plan implements IPlan {
                 //Do nothing
             }
         }
-        System.out.println(tables); //Check tableSet
+        System.out.println(tables); //Check tableSet*/
     }
 
     /**
@@ -109,13 +140,13 @@ public class Plan implements IPlan {
         boolean guestFound = false; // .next().contains(guest)
         int tableCheckingNum = 0;
 
-        while (tableCheckingNum < tables.size() && guestFound == false) {
+        while (tableCheckingNum < tables.size() && !guestFound) {
             if (tables.get(tableCheckingNum).contains(guest)) {
                 guestFound = true;
                 break;
             }
-            System.out.println(tables.get(tableCheckingNum)); //Check what is found
-            System.out.println(guest); //Check what is found
+            /*System.out.println(tables.get(tableCheckingNum)); //Check what is found
+            System.out.println(guest); //Check what is found*/
             tableCheckingNum++;
         }
 
