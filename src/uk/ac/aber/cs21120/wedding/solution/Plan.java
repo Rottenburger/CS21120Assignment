@@ -25,7 +25,6 @@ public class Plan implements IPlan {
             tables.add(new HashSet<String>()); //THIS IS THE PROBLEM!!
         }
 
-
         while (numberOfTables > tableNumber) {
             if (tableSeat != seatsPerTable) {
                 tables.get(tableNumber).add("Seat " + tableSeat);
@@ -69,13 +68,14 @@ public class Plan implements IPlan {
      */
     @Override
     public void addGuestToTable(int table, String guest) throws IndexOutOfBoundsException {
-
-
         if (table <= -1 || table > tables.size()) {
             throw new IndexOutOfBoundsException("that table number is invalid");
         }
-        if (isGuestPlaced(guest) && getGuestsAtTable(table).size() == getSeatsPerTable()) {
-            System.err.println("The table is either full or the guest has already been placed");
+        else if (isGuestPlaced(guest)) {
+            System.err.println("That guest has already been placed");
+        }
+        else if (getGuestsAtTable(table).size() == getSeatsPerTable()) {
+            System.err.println("This table is full");
         }
         else {
             Iterator<String> iterator = tables.get(table).iterator();
@@ -88,8 +88,7 @@ public class Plan implements IPlan {
                     break;
                 }
             }
-
-            System.out.println(tables.get(0)); //Print tableSet to check if working
+            System.out.println(tables.get(3)); //Print tableSet to check if working
             tables.get(table).add(guest);
 
             /*tables.set(table, tableSet).remove("Seat 0");
@@ -113,20 +112,17 @@ public class Plan implements IPlan {
      */
     @Override
     public void removeGuestFromTable(String guest) {
+        int tableCheckingNum = 0;
+        int guestTableLocation;
 
-        /*tables.get().remove(tableSet.iterator().next());*/
-
-        /*for (Set listOfTables: tables) {
-            if (listOfTables.contains(guest)) {
-                listOfTables.remove(guest);
-                listOfTables.add("Seat"); //TODO check number of seats avalible to create correctly named space
+        while (tableCheckingNum < tables.size()) {
+            if (tables.get(tableCheckingNum).contains(guest)) {
+                guestTableLocation = tableCheckingNum;
+                tables.get(guestTableLocation).remove(guest);
                 break;
             }
-            else {
-                //Do nothing
-            }
+            tableCheckingNum++;
         }
-        System.out.println(tables); //Check tableSet*/
     }
 
     /**
@@ -136,7 +132,6 @@ public class Plan implements IPlan {
      */
     @Override
     public boolean isGuestPlaced(String guest) {
-
         boolean guestFound = false; // .next().contains(guest)
         int tableCheckingNum = 0;
 
@@ -173,14 +168,23 @@ public class Plan implements IPlan {
      */
     @Override
     public Set<String> getGuestsAtTable(int t) {
-
-        if (t > tables.size()) {
+        if (t <= -1 || t > tables.size()) {
             throw new IndexOutOfBoundsException("There is no table with that number!");
         }
+        Set table = tables.get(t);
 
-        /*tables.get(t).contains("Seat");
-        tables.get(t);*/
-
-        return tables.get(t);
+        Iterator<String> iterator = table.iterator();
+        while(iterator.hasNext())
+        {
+            String value = iterator.next();
+            if (value.contains("Seat"))
+            {
+                iterator.remove();
+            }
+            else {
+                break;
+            }
+        }
+        return table;
     }
 }
