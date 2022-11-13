@@ -69,7 +69,7 @@ public class Plan implements IPlan {
     @Override
     public void addGuestToTable(int table, String guest) throws IndexOutOfBoundsException {
         try {
-            if (table <= -1 || tables.size() <= table) {
+            if (table < 0 || tables.size() <= table) {
                 throw new IndexOutOfBoundsException("That table does not exist");
             }
             else if (isGuestPlaced(guest)) {
@@ -89,7 +89,7 @@ public class Plan implements IPlan {
                         break;
                     }
                 }
-                System.out.println(tables.get(3)); //Print tableSet to check if working
+                /*System.out.println(tables.get(3)); //Print tableSet to check if working*/
                 tables.get(table).add(guest);
 
             /*tables.set(table, tableSet).remove("Seat 0");
