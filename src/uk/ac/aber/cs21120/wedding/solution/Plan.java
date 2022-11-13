@@ -73,10 +73,10 @@ public class Plan implements IPlan {
                 throw new IndexOutOfBoundsException("That table does not exist");
             }
             else if (isGuestPlaced(guest)) {
-                System.err.println("That guest has already been placed");
+                System.err.println("That guest has already been placed"); //Used for testing
             }
             else if (getGuestsAtTable(table).size() == getSeatsPerTable()) {
-                System.err.println("This table is full");
+                System.err.println("This table is full"); //Used for testing
             }
             else {
                 Iterator<String> iterator = tables.get(table).iterator();
@@ -148,7 +148,6 @@ public class Plan implements IPlan {
             System.out.println(guest); //Check what is found*/
             tableCheckingNum++;
         }
-
         /*while (tables.listIterator().hasNext() && !tableSet.contains(guest)) {
 
         }
@@ -160,7 +159,6 @@ public class Plan implements IPlan {
                 break;
             }
         }*/
-
         return guestFound;
     }
 
