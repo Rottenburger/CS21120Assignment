@@ -19,7 +19,9 @@ public class Rules implements IRules {
      */
     @Override
     public void addMustBeTogether(String a, String b) {
-        friends.add(a + b);
+        friends.add(a);
+        friends.add(b);
+        System.out.println(friends);
     }
 
     /**
@@ -31,7 +33,9 @@ public class Rules implements IRules {
      */
     @Override
     public void addMustBeApart(String a, String b) {
-        enemies.add(a + b);
+        enemies.add(a);
+        enemies.add(b);
+        System.out.println(enemies);
     }
 
     /**
@@ -43,17 +47,20 @@ public class Rules implements IRules {
     @Override
     public boolean isPlanOK(IPlan p) {
         int tableLoop = 0;
-        while (p.getNumberOfTables() < tableLoop) {
+        while (tableLoop < p.getNumberOfTables()) {
             int guestLoop = 0;
             Set guestTest = p.getGuestsAtTable(tableLoop);
-            while (guestTest.size() < guestLoop) {
-                if (guestTest == enemies) {
+            System.out.println(guestTest); //Testing
+            /*while (guestLoop < p.getSeatsPerTable()) {
+
+            }*/
+                if (guestTest.equals(enemies)) {
                     return false;
                 }
-                else if (guestTest == friends) {
+                else if (guestTest.size() == p.getSeatsPerTable() && !guestTest.equals(friends) && !friends.isEmpty()) {
                     return false;
                 }
-            }
+            tableLoop++;
         }
         return true;
     }
