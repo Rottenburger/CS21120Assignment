@@ -7,8 +7,12 @@ import java.util.*;
 
 public class Rules implements IRules {
 
-    Set<String> friends = new HashSet<>(); //TODO I think i need to create a new set for each pair of friends and enemies
+    /*Set<String> friends = new HashSet<>(); //TODO I think i need to create a new set for each pair of friends and enemies
     Set<String> enemies = new HashSet<>();
+    ArrayList<Set<String>> guestRules = new ArrayList<>();*/
+
+    Map<String, HashSet<String>> friendRules = new HashMap<>();
+    Map<String, HashSet<String>> enemyRules = new HashMap<>();
 
     /**
      * Add a rule that two guests must be seated at the same table.
@@ -19,10 +23,28 @@ public class Rules implements IRules {
      */
     @Override
     public void addMustBeTogether(String a, String b) {
-        /*Set<String> friends = new HashSet<>();*/
-        friends.add(a);
+        if (friendRules.containsKey(a) && !friendRules.get(a).contains(b)) {
+            friendRules.get(a).add(b);
+        }
+        else if (friendRules.containsKey(b) && !friendRules.get(b).contains(a)) {
+            friendRules.get(a).add(a);
+        }
+        else if (friendRules.get(a).contains(b) || friendRules.get(b).contains(a)) { //TODO
+            System.err.println("They are already friends");
+        }
+        else {
+            friendRules.put(a, new HashSet<>());
+            friendRules.get(a).add(b);
+
+            friendRules.put(b, new HashSet<>());
+            friendRules.get(b).add(a);
+            System.out.println(friendRules);
+        }
+
+        /*friends.add(a);
         friends.add(b);
-        //System.out.println(friends);
+        guestRules.add(friends);
+        System.out.println(friends);*/
     }
 
     /**
@@ -34,11 +56,43 @@ public class Rules implements IRules {
      */
     @Override
     public void addMustBeApart(String a, String b) {
-        /*Set<String> enemies = new HashSet<>();*/
+        if (enemyRules.containsKey(a)) {
+            enemyRules.get(a).add(b);
+            System.out.println(enemyRules); //TESTING
+        }
+        else if (enemyRules.containsKey(b)) {
+            enemyRules.get(b).add(a);
+            System.out.println(enemyRules); //TESTING
+        }
+        else if (enemyRules.get(a).contains(b) || enemyRules.get(b).contains(a)) { //TODO
+            System.err.println("They are already enemies");
+        }
+        else {
+            enemyRules.put(a, new HashSet<>());
+            enemyRules.get(a).add(b);
+
+            enemyRules.put(b, new HashSet<>());
+            enemyRules.get(b).add(a);
+            System.out.println(enemyRules); //TESTING
+        }
+
+        /*if (enemies.contains(a + b)) {
+            //Do nothing
+        }
+        else {
+            enemies.add(a + b);
+        }*/
+
+        /*Set<String> enemies = new HashSet<>();
         enemies.add(a);
         enemies.add(b);
-        //System.out.println(enemies);
+        guestRules.add(enemies);
+        System.out.println(enemies);*/
     }
+
+    //IMPORTANT!!! Create a new set for each guest A and A that will add more enimes to it
+    //if there is not already a set for it. Then you can just use .contains for your method
+    //bellow. Look at Plan.java, all you have to do is iterate.
 
     /**
      * Return true if the given plan does not break any of the stored rules.
@@ -48,10 +102,27 @@ public class Rules implements IRules {
      */
     @Override
     public boolean isPlanOK(IPlan p) {
-        int tableLoop = 0;
+        for (int i = 0; i < p.getNumberOfTables(); i++) {
+            Set<String> table = p.getGuestsAtTable(i);
+            for (String guest : table) {
+                if (enemyRules.containsKey(guest) && p.getGuestsAtTable(i).containsAll(enemyRules.get(guest))) {
+                    return false;
+                }
+                if (friendRules.containsKey(guest) && table.size() == p.getSeatsPerTable() && !p.getGuestsAtTable(i).containsAll(friendRules.get(guest))) {
+                    return false;
+                }
+            }
+        }
+        return true;
+
+        /*if (friendRules.get(guest).containsAll(p.getGuestsAtTable(i))) {
+            return true;
+        }*/
+
+        /*int tableLoop = 0;
         while (tableLoop < p.getNumberOfTables()) {
             Set<String> table = p.getGuestsAtTable(tableLoop);
-            /*System.out.println(guestTest); //Testing*/
+            *//*System.out.println(guestTest); //Testing*//*
             for (String guest : table) {
                 int enemiesAtTable = 0;
                 int friendsAtTable = 0;
@@ -78,18 +149,18 @@ public class Rules implements IRules {
                         return false;
                     }
                 }
-                /*else if (guestTest.size() == p.getSeatsPerTable() && !guest.equals(friends.iterator().next()) && !friends.isEmpty()) {
+                *//*else if (guestTest.size() == p.getSeatsPerTable() && !guest.equals(friends.iterator().next()) && !friends.isEmpty()) {
                     return false;
-                }*/
+                }*//*
             }
-                /*if (guestTest.iterator().hasNext() == enemies.iterator().hasNext()) {
+                *//*if (guestTest.iterator().hasNext() == enemies.iterator().hasNext()) {
                     return false;
                 }
                 else if (guestTest.size() == p.getSeatsPerTable() && !guestTest.equals(friends) && !friends.isEmpty()) {
                     return false;
-                }*/
+                }*//*
             tableLoop++;
         }
-        return true;
+        return true;*/
     }
 }
