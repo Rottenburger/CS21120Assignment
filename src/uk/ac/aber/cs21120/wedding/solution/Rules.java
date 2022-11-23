@@ -23,7 +23,7 @@ public class Rules implements IRules {
      */
     @Override
     public void addMustBeTogether(String a, String b) {
-        if (friendRules.containsKey(a) && !friendRules.get(a).contains(b)) {
+        if (friendRules.containsKey(a) && friendRules.get(a).contains(b)) {
             friendRules.get(a).add(b);
         }
         if (friendRules.containsKey(b) && friendRules.get(b).contains(a)) {

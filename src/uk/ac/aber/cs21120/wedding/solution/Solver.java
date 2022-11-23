@@ -39,16 +39,20 @@ public class Solver implements ISolver {
                         solverPlan.addGuestToTable(i, guest);
                         if (solveRules.isPlanOK(solverPlan)) {
                             solveResult = solve();
+                            //System.out.println(solverPlan.toString()); //TESTING
                             if (solveResult) {
                                 return true;
                             }
                             solverPlan.removeGuestFromTable(guest);
+                            //System.out.println(solverPlan.toString()); //TESTING
                         }
                     }
+                    //System.out.println(solverPlan.toString()); //TESTING
                     return false;
                 }
             }
         }
+        //System.out.println(solverPlan.toString()); //TESTING
         return true;
     }
 }
