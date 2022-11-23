@@ -6,11 +6,21 @@ import uk.ac.aber.cs21120.wedding.interfaces.ISolver;
 
 public class Solver implements ISolver {
 
-    public String[] guest;
-    public IPlan plan1;
-    public IRules rule1;
+    public String[] solverGuests;
+    public IPlan solverPlan;
+    public IRules solveRules;
 
+    /**
+     * Constructor for Solver class takes a String guest input that will use
+     * an IPlan class and a IRules class to build a seating plan that will be tested
+     * @param guests String list of guests for the wedding
+     * @param plan Plan containing tables with seats
+     * @param rules Rules containing rules for guest seating
+     */
     public Solver(String[]guests, IPlan plan, IRules rules) {
+        solverGuests = guests;
+        solverPlan = plan;
+        solveRules = rules;
     }
 
     /**
@@ -21,6 +31,24 @@ public class Solver implements ISolver {
      */
     @Override
     public boolean solve() {
-        return false;
+        boolean solveResult;
+        for (int i = 0; i < solverPlan.getNumberOfTables(); i++) {
+            while (solverPlan.getGuestsAtTable(i).size() < solverPlan.getSeatsPerTable()) {
+                for (String guest : solverGuests) {
+                    if (!solverPlan.isGuestPlaced(guest)) {
+                        solverPlan.addGuestToTable(i, guest);
+                        if (solveRules.isPlanOK(solverPlan)) {
+                            solveResult = solve();
+                            if (solveResult) {
+                                return true;
+                            }
+                            solverPlan.removeGuestFromTable(guest);
+                        }
+                    }
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }
