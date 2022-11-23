@@ -26,7 +26,7 @@ public class Rules implements IRules {
         if (friendRules.containsKey(a) && !friendRules.get(a).contains(b)) {
             friendRules.get(a).add(b);
         }
-        if (friendRules.containsKey(b) && !friendRules.get(b).contains(a)) {
+        if (friendRules.containsKey(b) && friendRules.get(b).contains(a)) {
             friendRules.get(a).add(a);
         }
         /*else if (friendRules.get(a).contains(b) || friendRules.get(b).contains(a)) { //TODO
@@ -56,11 +56,11 @@ public class Rules implements IRules {
      */
     @Override
     public void addMustBeApart(String a, String b) {
-        if (enemyRules.containsKey(a) && !enemyRules.get(a).contains(b)) {
+        if (enemyRules.containsKey(a) && enemyRules.get(a).contains(b)) {
             enemyRules.get(a).add(b);
             //System.out.println(enemyRules); //TESTING
         }
-        if (enemyRules.containsKey(b) && !enemyRules.get(b).contains(a)) {
+        if (enemyRules.containsKey(b) && enemyRules.get(b).contains(a)) {
             enemyRules.get(b).add(a);
             //System.out.println(enemyRules); //TESTING
         }

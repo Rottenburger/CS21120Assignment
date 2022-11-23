@@ -5,6 +5,7 @@ import uk.ac.aber.cs21120.wedding.interfaces.IRules;
 import uk.ac.aber.cs21120.wedding.interfaces.ISolver;
 
 public class Solver implements ISolver {
+
     public Solver(String[]guests, IPlan plan, IRules rules) {
     }
 
