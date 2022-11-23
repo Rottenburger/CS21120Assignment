@@ -11,8 +11,8 @@ public class Rules implements IRules {
     Set<String> enemies = new HashSet<>();
     ArrayList<Set<String>> guestRules = new ArrayList<>();*/
 
-    Map<String, HashSet<String>> friendRules = new HashMap<>();
-    Map<String, HashSet<String>> enemyRules = new HashMap<>();
+    public Map<String, Set<String>> friendRules = new HashMap<>();
+    public Map<String, Set<String>> enemyRules = new HashMap<>();
 
     /**
      * Add a rule that two guests must be seated at the same table.
@@ -26,19 +26,19 @@ public class Rules implements IRules {
         if (friendRules.containsKey(a) && !friendRules.get(a).contains(b)) {
             friendRules.get(a).add(b);
         }
-        else if (friendRules.containsKey(b) && !friendRules.get(b).contains(a)) {
+        if (friendRules.containsKey(b) && !friendRules.get(b).contains(a)) {
             friendRules.get(a).add(a);
         }
-        else if (friendRules.get(a).contains(b) || friendRules.get(b).contains(a)) { //TODO
+        /*else if (friendRules.get(a).contains(b) || friendRules.get(b).contains(a)) { //TODO
             System.err.println("They are already friends");
-        }
+        }*/
         else {
             friendRules.put(a, new HashSet<>());
             friendRules.get(a).add(b);
 
             friendRules.put(b, new HashSet<>());
             friendRules.get(b).add(a);
-            System.out.println(friendRules);
+            //System.out.println(friendRules);
         }
 
         /*friends.add(a);
@@ -56,24 +56,24 @@ public class Rules implements IRules {
      */
     @Override
     public void addMustBeApart(String a, String b) {
-        if (enemyRules.containsKey(a)) {
+        if (enemyRules.containsKey(a) && !enemyRules.get(a).contains(b)) {
             enemyRules.get(a).add(b);
-            System.out.println(enemyRules); //TESTING
+            //System.out.println(enemyRules); //TESTING
         }
-        else if (enemyRules.containsKey(b)) {
+        if (enemyRules.containsKey(b) && !enemyRules.get(b).contains(a)) {
             enemyRules.get(b).add(a);
-            System.out.println(enemyRules); //TESTING
+            //System.out.println(enemyRules); //TESTING
         }
-        else if (enemyRules.get(a).contains(b) || enemyRules.get(b).contains(a)) { //TODO
+        /*else if (enemyRules.get(a).contains(b) || enemyRules.get(b).contains(a)) { //TODO
             System.err.println("They are already enemies");
-        }
+        }*/
         else {
             enemyRules.put(a, new HashSet<>());
             enemyRules.get(a).add(b);
 
             enemyRules.put(b, new HashSet<>());
             enemyRules.get(b).add(a);
-            System.out.println(enemyRules); //TESTING
+            //System.out.println(enemyRules); //TESTING
         }
 
         /*if (enemies.contains(a + b)) {
