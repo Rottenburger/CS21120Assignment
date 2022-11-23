@@ -7,7 +7,7 @@ import java.util.*;
 
 public class Rules implements IRules {
 
-    /*Set<String> friends = new HashSet<>(); //TODO I think i need to create a new set for each pair of friends and enemies
+    /*Set<String> friends = new HashSet<>();
     Set<String> enemies = new HashSet<>();
     ArrayList<Set<String>> guestRules = new ArrayList<>();*/
 

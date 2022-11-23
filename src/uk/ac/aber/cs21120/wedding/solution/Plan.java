@@ -189,4 +189,22 @@ public class Plan implements IPlan {
         }
         return table;
     }
+
+    /**
+     * toSting method created by examiner for main assignment. Used for testing
+     * the Solver class by printing out each table with their respective seats.
+     * @return tables and seats as a string
+     */
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for(int i=0;i<getNumberOfTables();i++){
+            Set<String> t = getGuestsAtTable(i);
+            sb.append('(');
+            List<String> list = new ArrayList<String>(t);
+            sb.append(String.join(",", list));
+            sb.append(") ");
+        }
+        return sb.toString();
+    }
 }

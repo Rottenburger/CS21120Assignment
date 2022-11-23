@@ -6,6 +6,10 @@ import uk.ac.aber.cs21120.wedding.interfaces.ISolver;
 
 public class Solver implements ISolver {
 
+    public String[] guest;
+    public IPlan plan1;
+    public IRules rule1;
+
     public Solver(String[]guests, IPlan plan, IRules rules) {
     }
 
