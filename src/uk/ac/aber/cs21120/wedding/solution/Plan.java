@@ -6,8 +6,8 @@ import java.util.*;
 
 public class Plan implements IPlan {
 
-    public List<Set> tables = new ArrayList<>(); //TODO decide weather to use a LinkedList or ArrayList
-    public int tableSeats;
+    public List<Set<String>> tables = new ArrayList<>(); //TODO decide weather to use a LinkedList or ArrayList
+    public int tableSeats; //Assigning the seats per table to a global variable because I don't know any other way
     /*public Set<String> tableSet = new HashSet<>(); //Hash set of strings to represent guests*/
 
     /**
@@ -22,7 +22,7 @@ public class Plan implements IPlan {
         tableSeats = seatsPerTable; //Assigning the seats per table to a global variable because I don't know any other way
 
         while (tables.size() < numberOfTables) {
-            tables.add(new HashSet<String>()); //THIS IS THE PROBLEM!!
+            tables.add(new HashSet<>()); //THIS IS THE PROBLEM!!
         }
 
         while (numberOfTables > tableNumber) {
@@ -103,7 +103,7 @@ public class Plan implements IPlan {
         }
 
         /*else {
-            tables.get(table).remove(tableSet.iterator().next()); //TODO this removes every guest added & does this for every set in the list
+            tables.get(table).remove(tableSet.iterator().next());
             tables.get(table).add(guest);
             System.out.println(tables.get(table)); //Print tableSet to check if working
         }*/
@@ -139,7 +139,7 @@ public class Plan implements IPlan {
         boolean guestFound = false; // .next().contains(guest)
         int tableCheckingNum = 0;
 
-        while (tableCheckingNum < tables.size() && !guestFound) {
+        while (tableCheckingNum < tables.size()) {
             if (tables.get(tableCheckingNum).contains(guest)) {
                 guestFound = true;
                 break;
@@ -173,7 +173,7 @@ public class Plan implements IPlan {
         if (t <= -1 || t > tables.size()) {
             throw new IndexOutOfBoundsException("There is no table with that number!");
         }
-        Set table = tables.get(t);
+        Set<String> table = tables.get(t);
 
         Iterator<String> iterator = table.iterator();
         while(iterator.hasNext())
@@ -201,7 +201,7 @@ public class Plan implements IPlan {
         for(int i=0;i<getNumberOfTables();i++){
             Set<String> t = getGuestsAtTable(i);
             sb.append('(');
-            List<String> list = new ArrayList<String>(t);
+            List<String> list = new ArrayList<>(t);
             sb.append(String.join(",", list));
             sb.append(") ");
         }

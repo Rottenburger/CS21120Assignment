@@ -18,9 +18,9 @@ public class Solver implements ISolver {
      * @param rules Rules containing rules for guest seating
      */
     public Solver(String[]guests, IPlan plan, IRules rules) {
-        solverGuests = guests;
-        solverPlan = plan;
-        solveRules = rules;
+        this.solverGuests = guests;
+        this.solverPlan = plan;
+        this.solveRules = rules;
     }
 
     /**
@@ -34,7 +34,7 @@ public class Solver implements ISolver {
         boolean solveResult;
         for (int i = 0; i < solverPlan.getNumberOfTables(); i++) {
             while (solverPlan.getGuestsAtTable(i).size() < solverPlan.getSeatsPerTable()) {
-                for (String guest : solverGuests) {
+                for (String guest : solverGuests) { //TODO This adds the same guest over and over
                     if (!solverPlan.isGuestPlaced(guest)) {
                         solverPlan.addGuestToTable(i, guest);
                         if (solveRules.isPlanOK(solverPlan)) {
@@ -43,13 +43,14 @@ public class Solver implements ISolver {
                             if (solveResult) {
                                 return true;
                             }
-                            solverPlan.removeGuestFromTable(guest);
                             //System.out.println(solverPlan.toString()); //TESTING
                         }
+                        //solverPlan.removeGuestFromTable(guest);
+                        return false;
                     }
                     //System.out.println(solverPlan.toString()); //TESTING
-                    return false;
                 }
+                return false;
             }
         }
         //System.out.println(solverPlan.toString()); //TESTING
