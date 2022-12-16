@@ -43,10 +43,11 @@ public class Solver implements ISolver {
                             if (solveResult) {
                                 return true;
                             }
+                            solverPlan.removeGuestFromTable(guest);
                             //System.out.println(solverPlan.toString()); //TESTING
                         }
-                        //solverPlan.removeGuestFromTable(guest);
-                        return false;
+                        solverPlan.removeGuestFromTable(guest);
+                        //return false;
                     }
                     //System.out.println(solverPlan.toString()); //TESTING
                 }

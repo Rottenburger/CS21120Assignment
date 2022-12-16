@@ -25,7 +25,7 @@ public class Plan implements IPlan {
             tables.add(new HashSet<>()); //THIS IS THE PROBLEM!!
         }
 
-        while (numberOfTables > tableNumber) {
+        /*while (numberOfTables > tableNumber) {
             if (tableSeat != seatsPerTable) {
                 tables.get(tableNumber).add("Seat " + tableSeat);
                 tableSeat++;
@@ -34,7 +34,7 @@ public class Plan implements IPlan {
                 tableNumber++;
                 tableSeat = 0;
             }
-        }
+        }*/
     }
 
 
